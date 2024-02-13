@@ -11,7 +11,7 @@ pipeline {
         NEXUS_PASS = 'Choudhary@6'
         RELEASE_REPO = 'vprofile-release'
         CENTRAL_REPO = 'vpro-maven-central'
-        NEXUSIP = '172.31.32.74'
+        NEXUSIP = '172.31.40.253'
         NEXUSPORT = '8081'
         NEXUS_GRP_REPO = 'vpro-maven-group'
         NEXUS_LOGIN = 'nexuslogin'
@@ -21,12 +21,8 @@ pipeline {
     stages {
         stage('Build'){
             steps {
-                sh 'mvn -s setting.xml -DskipTests install'
+                sh 'mvn -s settings.xml -DskipTests install'
             }
         }
-    }
-
-
-
-
+    } 
 }
