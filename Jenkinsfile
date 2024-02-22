@@ -56,7 +56,7 @@ pipeline {
                     -Dsonar.projectversion=1.0 \
                     -Dsonar.source=src/ \
                     -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
-                    -Dsonar.junit.reportPath=target/surefire-report/ \
+                    -Dsonar.junit.reportPath=target/surefire-reports/ \
                     -Dsonar.jacoco.reportsPath=target/jacoco.exec \
                     -Dsonar.java.checkstyle.reportpaths=target/checkstyle-result.xml'''
                 }
