@@ -54,7 +54,6 @@ pipeline {
                 withSonarQubeEnv("${SONARSERVER}") {
                     sh """${scannerHome}/bin/sonar-scanner -Dsonar.projectkey=vprofile \
                     -Dsonar.projectName=vprofile \
-                    -Dsonar.host.url=http:13.51.178.237 \
                     -Dsonar.login=jenkins
                     -Dsonar.projectversion=1.0 \
                     -Dsonar.source=src/ \
