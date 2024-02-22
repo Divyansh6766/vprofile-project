@@ -11,7 +11,7 @@ pipeline {
         NEXUS_PASS = 'Choudhary@6'
         RELEASE_REPO = 'vprofile-release'
         CENTRAL_REPO = 'vpro-maven-central'
-        NEXUSIP = '172.31.40.253'
+        NEXUSIP = '172.31.27.232'
         NEXUSPORT = '8081'
         NEXUS_GRP_REPO = 'vpro-maven-group'
         NEXUS_LOGIN = 'nexuslogin'
@@ -23,7 +23,7 @@ pipeline {
     stages {
         stage('Build'){
             steps {
-                sh 'mvn -s settings.xml -DskipTests install'
+                sh 'maven -s settings.xml -DskipTests install'
             }
             post {
                 success {
@@ -66,10 +66,38 @@ pipeline {
         stage("Quality Gate") {
             steps {
                 timeout(time: 1, unit: 'HOURS') {
-                    
+
                     waitForQualityGate abortPipeline: true
                 }
             }
+        }
+
+        stage("UploadArtifact"){
+            steps{
+                nexusArtifactUploader(
+                  nexusVersion: 'nexus3',
+                  protocol: 'http',
+                  nexusUrl: "${NEXUSIP}:${NEXUSPORT}",
+                  groupId: 'QA',
+                  version: "${env.BUILD_ID}-${ENV.BUILD_TIMESTAMP}",
+                  repository: "${RELEASE_REPO}",
+                  credentialised: "${NEXUS_LOGIN}",
+                  artifacts: [
+                    [artifactid: 'vproapp'
+                     classifier: '',
+                     file: 'target/vprofile-v2.war',
+                     type: 'war']
+                  ]  
+                )
+            }
+        }
+    }
+    post {
+        always {
+            echo 'Slack Notification.'
+            slackSend channel: '#jenkinsscicd',
+                color: COLOR_MAP[currentBuild.currentResult],
+                message: "*${currentBuild.currentResult}:* job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
         }
     }
 }
