@@ -13,7 +13,7 @@ phases:
     commands:
     - cp ./settings.xml /root/.m2/settings.xml
     - export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain dcdc --domain-owner 994929399395 --region us-east-1 --query authorizationToken --output text`
-  pre_build:
+pre_build:
     commands:
       - apt-get update
       - apt-get install -y jq checkstyle
